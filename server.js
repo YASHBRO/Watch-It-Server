@@ -26,27 +26,31 @@ io.on("connection", (socket) => {
 
     socket.on("join-room", (roomId) => {
         socket.join(roomId);
+        console.log(socket.id, "joined the room", roomId);
     });
 
     let bufferTimeout;
 
     socket.on("play-video", (roomId, timestamp) => {
+        console.log("socket play-video");
         clearTimeout(bufferTimeout);
         socket.to(roomId).emit("seek-to", timestamp);
     });
 
     socket.on("pause-video", (roomId, timestamp) => {
+        console.log("socket pause-video");
         socket.to(roomId).emit("pause-at", timestamp);
     });
 
     socket.on("buffer-video", (roomId, timestamp) => {
         bufferTimeout = setTimeout(() => {
+            console.log("socket buffer-video");
             socket.to(roomId).emit("buffer-at", timestamp);
         }, 1500);
     });
 
     socket.on("update-room", (roomId) => {
-        socket.to(roomId).emit("get-room-details"); 
+        socket.to(roomId).emit("get-room-details");
     });
 });
 
