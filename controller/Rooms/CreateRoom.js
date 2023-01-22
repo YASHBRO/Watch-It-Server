@@ -4,7 +4,7 @@ const Users = require("../../models/Users");
 async function CreateRoom(req, res, next) {
     const {
         userId,
-        body: { guestControl = false, privateRoom = false },
+        body: { guestControl = false, privateRoom = false, currentVideo = "" },
     } = req;
 
     if (!userId) {
@@ -16,6 +16,7 @@ async function CreateRoom(req, res, next) {
         host: userId,
         guestControl: guestControl,
         privateRoom: privateRoom,
+        currentVideo: currentVideo,
     });
 
     const user = await Users.findById(userId);
@@ -30,6 +31,7 @@ async function CreateRoom(req, res, next) {
             hostId: newRoom.host,
             guestControl: newRoom.guestControl,
             privateRoom: newRoom.privateRoom,
+            currentVideo: newRoom.currentVideo,
         },
     });
 
